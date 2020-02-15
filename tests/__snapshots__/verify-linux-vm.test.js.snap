@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IAC Linux VM Tests should ssh into the linux vm and verify the os details are correct 1`] = `
+exports[`IAC Linux Tests should ssh into the linux vm and verify the os details are correct 1`] = `
 "CentOS Linux release 7.5.1804 (Core) 
 NAME=\\"CentOS Linux\\"
 VERSION=\\"7 (Core)\\"
