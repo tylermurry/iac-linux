@@ -4,7 +4,7 @@ trigger: none
 steps:
 
   #####################
-  #       Setup       #
+  #  Core Execution   #
   #####################
 
   - script: |
@@ -14,13 +14,7 @@ steps:
       export TF_VAR_subscription_id="$(subscription-id)"
       export TF_VAR_vm_username="$(vm-username)"
       export TF_VAR_vm_password="$(vm-password)"
-    displayName: 'Mapping build variables into Terraform variables'
 
-  #####################
-  #   Core Execution  #
-  #####################
-
-  - script: |
       terraform init terraform
       terraform apply -auto-approve terraform
       terraform refresh terraform
@@ -32,9 +26,6 @@ steps:
 
   - script: |
       export TF_OUTPUT_PUBLIC_IP=$(terraform output -state=terraform/terraform.tfstate public_ip)
-    displayName: 'Extracting variables from Terraform output'
-
-  - script: |
       echo "{ \"public_ip\": \"$TF_OUTPUT_PUBLIC_IP\" }" > result.json
     displayName: 'Writing out the results of the build to publish'
 
