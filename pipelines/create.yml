@@ -25,7 +25,7 @@ steps:
   #####################
 
   - script: |
-      export TF_OUTPUT_PUBLIC_IP=$(terraform output -state=terraform/terraform.tfstate public_ip)
+      export TF_OUTPUT_PUBLIC_IP=$(terraform output public_ip)
       echo "{ \"public_ip\": \"$TF_OUTPUT_PUBLIC_IP\" }" > result.json
     displayName: 'Writing out the results of the build to publish'
 
