@@ -21,9 +21,9 @@ steps:
   #####################
 
   - script: |
-      terraform init
-      terraform apply -auto-approve
-      terraform refresh
+      terraform init terraform
+      terraform apply -auto-approve terraform
+      terraform refresh terraform
     displayName: 'Executing Terraform'
 
   #####################
@@ -31,7 +31,7 @@ steps:
   #####################
 
   - script: |
-      TF_OUTPUT_PUBLIC_IP=$(terraform output public_ip)
+      TF_OUTPUT_PUBLIC_IP=$(terraform output -state=terraform/terraform.tfstate public_ip)
     displayName: 'Extracting variables from Terraform output'
 
   - script: |
