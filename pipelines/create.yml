@@ -8,12 +8,12 @@ steps:
   #####################
 
   - script: |
-      echo "##vso[task.setvariable variable=TF_client_id]$(client-id)"
-      echo "##vso[task.setvariable variable=TF_client_secret]$(client-secret)"
-      echo "##vso[task.setvariable variable=TF_tenant_id]$(tenant-id)"
-      echo "##vso[task.setvariable variable=TF_subscription_id]$(subscription-id)"
-      echo "##vso[task.setvariable variable=TF_vm_username]$(vm-username)"
-      echo "##vso[task.setvariable variable=TF_vm_password]$(vm-password)"
+      echo "##vso[task.setvariable variable=TF_VAR_client_id]$(client-id)"
+      echo "##vso[task.setvariable variable=TF_VAR_client_secret]$(client-secret)"
+      echo "##vso[task.setvariable variable=TF_VAR_tenant_id]$(tenant-id)"
+      echo "##vso[task.setvariable variable=TF_VAR_subscription_id]$(subscription-id)"
+      echo "##vso[task.setvariable variable=TF_VAR_vm_username]$(vm-username)"
+      echo "##vso[task.setvariable variable=TF_VAR_vm_password]$(vm-password)"
     displayName: 'Mapping build variables into Terraform variables'
 
   #####################
@@ -31,7 +31,7 @@ steps:
   #####################
 
   - script: |
-      TF_OUTPUT_PUBLIC_IP=$(terraform output -state=terraform/terraform.tfstate public_ip)
+      export TF_OUTPUT_PUBLIC_IP=$(terraform output -state=terraform/terraform.tfstate public_ip)
     displayName: 'Extracting variables from Terraform output'
 
   - script: |
@@ -48,9 +48,9 @@ steps:
   #####################
 
   - script: |
-      IAC_LINUX_IP_ADDRESS=$TF_OUTPUT_PUBLIC_IP
-      IAC_LINUX_USERNAME=$(vm-username)
-      IAC_LINUX_PASSWORD=$(vm-password)
+      export IAC_LINUX_IP_ADDRESS=$TF_OUTPUT_PUBLIC_IP
+      export IAC_LINUX_USERNAME=$(vm-username)
+      export IAC_LINUX_PASSWORD=$(vm-password)
 
       npm install
       npm test
