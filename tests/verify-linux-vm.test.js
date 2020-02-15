@@ -1,6 +1,6 @@
 const ssh = new (require('node-ssh'))();
 
-describe('IAC Linux Tests', () => {
+describe('IAC Linux - ', () => {
   beforeAll(async () => ssh.connect({
     host: process.env.IAC_LINUX_IP_ADDRESS,
     username: process.env.IAC_LINUX_USERNAME,

@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/tylermurry/iac-linux#readme",
   "dependencies": {
+    "jest-junit": "^10.0.0",
     "node-ssh": "^7.0.0"
   },
   "devDependencies": {

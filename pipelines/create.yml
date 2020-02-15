@@ -1,0 +1,64 @@
+name: 'Create Linux VM'
+trigger: none
+
+steps:
+
+  #####################
+  #       Setup       #
+  #####################
+
+  - script: |
+      echo "##vso[task.setvariable variable=TF_client_id]$(client-id)"
+      echo "##vso[task.setvariable variable=TF_client_secret]$(client-secret)"
+      echo "##vso[task.setvariable variable=TF_tenant_id]$(tenant-id)"
+      echo "##vso[task.setvariable variable=TF_subscription_id]$(subscription-id)"
+      echo "##vso[task.setvariable variable=TF_vm_username]$(vm-username)"
+      echo "##vso[task.setvariable variable=TF_vm_password]$(vm-password)"
+    displayName: 'Mapping build variables into Terraform variables'
+
+  #####################
+  #   Core Execution  #
+  #####################
+
+  - script: |
+      terraform init
+      terraform apply -auto-approve
+      terraform refresh
+    displayName: 'Executing Terraform'
+
+  #####################
+  #      Output       #
+  #####################
+
+  - script: |
+      TF_OUTPUT_PUBLIC_IP=$(terraform output public_ip)
+    displayName: 'Extracting variables from Terraform output'
+
+  - script: |
+      echo "{ \"public_ip\": \"$TF_OUTPUT_PUBLIC_IP\" }" > result.json
+    displayName: 'Writing out the results of the build to publish'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publishing results to build'
+    inputs:
+      PathtoPublish: 'result.json'
+
+  #####################
+  #      Verify       #
+  #####################
+
+  - script: |
+      IAC_LINUX_IP_ADDRESS=$TF_OUTPUT_PUBLIC_IP
+      IAC_LINUX_USERNAME=$(vm-username)
+      IAC_LINUX_PASSWORD=$(vm-password)
+
+      npm install
+      npm test
+    displayName: 'Running tests to verify linux vm'
+
+  - task: PublishTestResults@2
+    displayName: 'Uploading test results to build'
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'junit.xml'
+      failTaskOnFailedTests: true
