@@ -1,0 +1,22 @@
+{
+  "name": "iac-linux",
+  "version": "1.0.0",
+  "description": "Houses the code and azure pipeline to create a basic linux vm",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tylermurry/iac-linux.git"
+  },
+  "author": "Tyler Murry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tylermurry/iac-linux/issues"
+  },
+  "homepage": "https://github.com/tylermurry/iac-linux#readme"
+}
