@@ -26,6 +26,8 @@ steps:
 
   - script: |
       export TF_OUTPUT_PUBLIC_IP=$(terraform output public_ip)
+      echo "##vso[task.setvariable variable=TF_OUTPUT_PUBLIC_IP]$TF_OUTPUT_PUBLIC_IP"
+
       echo "{ \"public_ip\": \"$TF_OUTPUT_PUBLIC_IP\" }" > result.json
     displayName: 'Writing out the results of the build to publish'
 
@@ -39,7 +41,7 @@ steps:
   #####################
 
   - script: |
-      export IAC_LINUX_IP_ADDRESS=$TF_OUTPUT_PUBLIC_IP
+      export IAC_LINUX_IP_ADDRESS=$(TF_OUTPUT_PUBLIC_IP)
       export IAC_LINUX_USERNAME=$(vm-username)
       export IAC_LINUX_PASSWORD=$(vm-password)
 
